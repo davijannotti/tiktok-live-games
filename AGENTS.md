@@ -25,9 +25,9 @@ public/
 
 ## Tech Stack
 
-- **Runtime:** Node.js >= 18 (ES Modules, `"type": "module"`)
+- **Runtime:** Node.js >= 22.19 (ES Modules, `"type": "module"`)
 - **Server:** Express 4.18 + Socket.io 4.7
-- **TikTok:** tiktok-live-connector 1.1.9 (WebcastPushConnection)
+- **TikTok:** piratetok-live-js 0.3.0 (TikTokLiveClient, no signing provider)
 - **Games:** Vanilla Canvas 2D + DOM HUD (horse-racing)
 - **Package manager:** npm
 
@@ -41,7 +41,7 @@ npm run dev      # node --watch src/server.js (dev, auto-reload)
 ## Data Flow
 
 ```
-TikTok Live → tiktok-live-connector → TikTokService.js → Socket.io rooms → tiktok-bridge.js → Game
+TikTok Live → PirateTok → TikTokService.js → Socket.io rooms → tiktok-bridge.js → Game
 ```
 
 Events: `tiktok_chat`, `tiktok_gift`, `tiktok_like`, `tiktok_share`, `tiktok_connected`, `tiktok_disconnected`, `tiktok_reconnecting`, `tiktok_error`.

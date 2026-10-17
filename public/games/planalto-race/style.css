@@ -1,0 +1,30 @@
+.planalto-race{height:262px;position:relative;overflow:hidden;border:3px solid var(--outline,#21153c);border-radius:18px 10px;background:#83bc4b;box-shadow:0 5px 0 var(--outline,#21153c);isolation:isolate}
+.planalto-race .planalto-race-scenery{height:32px;display:flex;align-items:center;gap:10px;padding:0 12px;color:#21153c;font:18px var(--paint,cursive);background:#bde972;border-bottom:3px solid #21153c}
+.planalto-race .planalto-race-scenery img{width:32px;height:23px;object-fit:contain;transform:rotate(-8deg)}
+.planalto-race .planalto-race-scenery>span{margin-left:auto;font-size:27px}
+.planalto-race .planalto-race-track{background:#52445d;border-block:5px dashed #ffeb8b}
+.planalto-race .planalto-race-lane{--car-color:var(--red,#ff485b);height:88px;position:relative;border-bottom:2px dashed #d5c5d7;background:repeating-linear-gradient(90deg,transparent 0 45px,#ffffff08 45px 90px)}
+.planalto-race .planalto-race-lane[data-team=bolsonaro]{--car-color:var(--green,#9ee833);border-bottom:0}
+.planalto-race .planalto-race-team{position:absolute;top:1px;left:8px;color:#fff5d5;font:11px Arial,sans-serif;font-weight:900;z-index:2}
+.planalto-race .planalto-race-team b{display:inline-block;background:var(--car-color);color:#21153c;padding:1px 4px;border-radius:3px}
+.planalto-race .planalto-race-runway{position:absolute;left:14px;right:105px;top:0;height:100%}
+.planalto-race .planalto-race-car{width:80px;height:65px;position:absolute;left:0;top:22px;z-index:3;transition:left 1s cubic-bezier(.2,.7,.3,1)}
+.planalto-race .planalto-race-head{position:absolute;width:47px;height:44px;left:16px;top:-9px;border:2px solid #21153c;border-radius:50% 50% 35% 35%;background:var(--car-color) url('../urna-battle/assets/lula-flavio-arcade.webp') left top/200% auto no-repeat;z-index:1}
+.planalto-race [data-team=bolsonaro] .planalto-race-head{background-position:right top}
+.planalto-race .planalto-race-body{position:absolute;left:0;right:0;top:24px;height:29px;border:3px solid #21153c;background:var(--car-color);border-radius:12px 24px 7px 7px;box-shadow:0 3px 0 #21153c;display:flex;justify-content:center;align-items:center;gap:8px;color:#21153c;z-index:2}
+.planalto-race .planalto-race-body img{width:22px;height:20px;object-fit:contain}
+.planalto-race .planalto-race-body b{font:18px var(--paint,cursive)}
+.planalto-race .planalto-race-wheel{position:absolute;top:45px;width:19px;height:19px;background:#282133;border:4px solid #171020;border-radius:50%;box-shadow:inset 0 0 0 2px #c1aecb;z-index:3;animation:planalto-race-wheel-spin .65s linear infinite}
+.planalto-race .planalto-race-wheel-back{left:9px}.planalto-race .planalto-race-wheel-front{right:8px}
+.planalto-race .planalto-race-finish{position:absolute;right:14px;inset-block:0;width:14px;background:conic-gradient(#fff5d5 25%,#21153c 0 50%,#fff5d5 0 75%,#21153c 0) 0 0/14px 14px}
+.planalto-race .planalto-race-flame{position:absolute;left:-26px;top:22px;font-size:31px;transform:rotate(-90deg);opacity:0}
+.planalto-race .planalto-race-boost{position:absolute;left:44px;top:-18px;white-space:nowrap;color:#ffdb49;font:17px var(--paint,cursive);text-shadow:2px 2px #21153c;opacity:0;z-index:5}
+.planalto-race .planalto-race-turbo .planalto-race-flame,.planalto-race .planalto-race-turbo .planalto-race-boost{opacity:1}
+.planalto-race .planalto-race-turbo .planalto-race-body{animation:planalto-race-bump .15s ease-in-out infinite alternate}
+.planalto-race .planalto-race-status{height:35px;margin:0;display:grid;place-items:center;background:#21153c;color:#ffdb49;font:14px var(--paint,cursive)}
+.planalto-race .planalto-race-winner:after{content:'🏆';position:absolute;top:-17px;left:57px;font-size:28px;z-index:6}
+.planalto-race.planalto-race-finished .planalto-race-wheel{animation-play-state:paused}
+@keyframes planalto-race-wheel-spin{to{transform:rotate(360deg)}}
+@keyframes planalto-race-bump{to{transform:translateY(-2px) rotate(-2deg)}}
+.planalto-race.planalto-race-reduced *{animation:none!important;transition:none!important}
+@media(prefers-reduced-motion:reduce){.planalto-race *{animation:none!important;transition:none!important}}

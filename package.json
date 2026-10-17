@@ -5,12 +5,13 @@
   "type": "module",
   "main": "src/server.js",
   "scripts": {
-    "start": "node src/server.js",
-    "dev": "node --watch src/server.js"
+    "start": "node --env-file-if-exists=.env src/server.js",
+    "dev": "node --env-file-if-exists=.env --watch src/server.js",
+    "test": "node --test"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/tiktok-live-games.git"
+    "url": "https://github.com/davijannotti/tiktok-live-games.git"
   },
   "keywords": [
     "tiktok",
@@ -26,10 +27,10 @@
   "license": "MIT",
   "dependencies": {
     "express": "^4.18.2",
-    "socket.io": "^4.7.2",
-    "tiktok-live-connector": "^1.1.9"
+    "piratetok-live-js": "0.3.0",
+    "socket.io": "^4.7.2"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=22.19.0"
   }
 }

@@ -47,15 +47,25 @@
 
 			this.username = username;
 			this.socket = io(serverUrl);
+			let liveConnected = false;
 
 			this.socket.on("connect", () => {
 				console.log("[TikTokBridge] Connected to server");
+				liveConnected = false;
 				this.socket.emit("join-room", username);
 			});
 
 			this.socket.on("room-joined", (data) => {
 				console.log(`[TikTokBridge] Joined room: ${data.room}`);
-				this._dispatch("connected", data);
+				if (!liveConnected) this._dispatch("connected", data);
+				liveConnected = true;
+			});
+
+			this.socket.on("tiktok_connected", (data) => {
+				if (!liveConnected) this._dispatch("connected", {
+					...data, room: username, message: `Joined room: ${username}`,
+				});
+				liveConnected = true;
 			});
 
 			// Event relay — canonical events only (no legacy duplicates)
@@ -66,10 +76,12 @@
 
 			this.socket.on("tiktok_disconnected", () => {
 				console.log("[TikTokBridge] TikTok disconnected");
+				liveConnected = false;
 				this._dispatch("disconnected");
 			});
 
 			this.socket.on("tiktok_reconnecting", (data) => {
+				liveConnected = false;
 				console.log(
 					`[TikTokBridge] Reconnecting attempt ${data.attempt} in ${data.delayMs}ms`,
 				);

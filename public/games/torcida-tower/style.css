@@ -1,0 +1,19 @@
+.torcida-tower{position:relative;box-sizing:border-box;width:100%;height:270px;overflow:hidden;border:3px solid var(--outline,#191128);border-radius:18px;background:#382155;color:#fff2bf;isolation:isolate;font-family:var(--paint,'Permanent Marker',cursive)}
+.torcida-tower .torcida-tower__title{position:relative;z-index:2;text-align:center;margin:3px 0 0;color:var(--yellow,#ffde49);font-size:20px;line-height:26px}
+.torcida-tower .torcida-tower__status{position:relative;z-index:2;text-align:center;margin:0;font:700 10px/15px Arial,sans-serif;letter-spacing:.2px}
+.torcida-tower .torcida-tower__field{position:absolute;inset:49px 0 0;background:radial-gradient(circle,#ffffff13 1px,transparent 2px) 0 0/14px 14px;border-bottom:7px solid #a47847}
+.torcida-tower .torcida-tower__lane{--tower-team:#ff486b;position:absolute;left:5%;bottom:0;width:40%;height:100%;text-align:center}
+.torcida-tower .torcida-tower__lane--bolsonaro{--tower-team:#a6e52d;left:55%}
+.torcida-tower .torcida-tower__stack{position:absolute;bottom:33px;left:50%;width:82px;transform:translateX(-50%);border:3px solid #191128;border-bottom:0;box-sizing:border-box;border-radius:4px 4px 0 0;background:repeating-linear-gradient(to top,transparent 0 13px,#191128 13px 16px),repeating-linear-gradient(90deg,transparent 0 37px,#191128 37px 40px),var(--tower-team);box-shadow:5px 0 #19112866;transition:height .65s ease}
+.torcida-tower .torcida-tower__climber{position:absolute;bottom:35px;left:50%;width:62px;height:54px;margin-left:-31px;transition:bottom .65s ease;transform-origin:bottom center;z-index:1}
+.torcida-tower .torcida-tower__face{position:absolute;inset:0;border:3px solid #191128;border-radius:50% 50% 35% 35%;background:var(--tower-team) url('../urna-battle/assets/lula-flavio-arcade.webp') left top/200% auto no-repeat;box-shadow:0 3px #191128}
+.torcida-tower .torcida-tower__lane--bolsonaro .torcida-tower__face{background-position:right top}
+.torcida-tower .torcida-tower__flag{position:absolute;right:-24px;top:0;width:28px;height:30px;object-fit:contain;border-left:3px solid #fff2bf;padding:2px;background:#fff2bf;transform:rotate(8deg);z-index:2}
+.torcida-tower .torcida-tower__points{position:absolute;bottom:13px;left:0;right:0;font:bold 17px/20px Arial,sans-serif;color:var(--tower-team);text-shadow:1px 2px #191128;white-space:nowrap}
+.torcida-tower .torcida-tower__name{position:absolute;bottom:0;left:0;right:0;font-size:12px;line-height:15px}
+.torcida-tower .torcida-tower__lane--leading .torcida-tower__face{box-shadow:0 0 0 3px #ffde49,0 4px #191128}
+.torcida-tower .torcida-tower__lane--winner .torcida-tower__flag{width:35px;transform:rotate(-8deg)}
+.torcida-tower .torcida-tower__brasil{position:absolute;left:50%;top:85px;width:35px;transform:translateX(-50%);opacity:.8}
+.torcida-tower .torcida-tower__burst{position:absolute;z-index:3;top:45%;left:0;right:0;color:#ffde49;text-shadow:2px 2px #191128;font-size:18px;pointer-events:none}
+.torcida-tower.torcida-tower--still .torcida-tower__stack,.torcida-tower.torcida-tower--still .torcida-tower__climber{transition:none}
+@media(prefers-reduced-motion:reduce){.torcida-tower .torcida-tower__stack,.torcida-tower .torcida-tower__climber{transition:none}}

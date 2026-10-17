@@ -321,5 +321,5 @@ Captured from TikTok Live Desktop app (March 2026).
 
 - Gift prices may vary by region and time
 - Use `debug.html` to discover exact gift names during your stream
-- Gift names from tiktok-live-connector may differ slightly from display names
+- Gift names from PirateTok may differ slightly from display names
 - Games should reference this catalog when mapping gifts to actions

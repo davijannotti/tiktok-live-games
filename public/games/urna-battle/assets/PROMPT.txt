@@ -1,0 +1,13 @@
+Generated with the built-in image_gen tool. Final asset: portraits.webp.
+
+Prompt: Create a square arcade character atlas with two equal-prominence, side-by-side cartoon portraits. Left: recognizable Luiz Inacio Lula da Silva with white hair and beard, red sports jersey. Right: recognizable Jair Bolsonaro with swept grey-black hair, green sports jersey and yellow collar. Both facing inward with playful expressions. Bold black ink outlines and cel shading, solid dark navy background, no text, no numbers, no party emblems, no endorsement.
+
+Source PNG retained in the image generation library. WebP encoded at quality 85 for the game.
+
+
+2026-10-16 — Lula vs Flávio Bolsonaro arcade atlas (built-in image_gen)
+Final asset: lula-flavio-arcade.webp, optimized WebP.
+Identity reference for Flávio: official Senate photo https://legis.senado.leg.br/senadores/fotos-oficiais/5894
+Profile: https://www25.senado.leg.br/web/senadores/senador/-/perfil/5894
+First prompt: replace the right character in the original atlas with Flávio Bolsonaro from the official reference; preserve equally prominent Lula and Flávio as playful arcade characters, red and green shirts, full heads, deep purple background, bold outlines and cel shading. No text, numbers, logos, flags or campaign slogans.
+Final reframe prompt: reframe the two-person illustration into a wide 2:1 atlas containing two equal square portraits. Preserve exact illustrated identities and expressions. Entire head, hair and chin within the central 80% height of each tile, a little shirt collar visible, uniform deep purple background. No text, badges, hands or props. Right character is Flávio, not Jair.

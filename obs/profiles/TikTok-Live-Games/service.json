@@ -1,0 +1,8 @@
+{
+  "type": "rtmp_custom",
+  "settings": {
+    "server": "rtmp://live.restream.io/live",
+    "key": "",
+    "use_auth": false
+  }
+}

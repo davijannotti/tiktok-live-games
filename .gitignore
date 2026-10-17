@@ -33,3 +33,10 @@ build/
 .opencode/*
 .opencode.*
 .beads/*
+# Local interaction history
+data/
+
+# Private OBS exports and Python cache
+private/
+*.private.tar.gz
+__pycache__/

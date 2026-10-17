@@ -10,7 +10,9 @@
  * @module services/TikTokService
  */
 
-import { WebcastPushConnection } from "tiktok-live-connector";
+import { TikTokLiveClient } from "piratetok-live-js";
+import { withoutTikTokRoomCache } from "../lib/tiktokRoomCache.js";
+
 import {
 	normalizeChat,
 	normalizeGift,
@@ -18,6 +20,9 @@ import {
 	normalizeShare,
 } from "../lib/tiktokEventNormalizer.js";
 import { getDelay, shouldRetry, sleep } from "../lib/tiktokReconnectPolicy.js";
+
+// The client has no fetch option; constrain the workaround to its TikTok room endpoint.
+globalThis.fetch = withoutTikTokRoomCache(globalThis.fetch);
 
 class TikTokService {
 	constructor() {
@@ -29,7 +34,7 @@ class TikTokService {
 
 		/**
 		 * Map storing active TikTok connections
-		 * @type {Map<string, {connection: WebcastPushConnection, lastActivity: number}>}
+		 * @type {Map<string, {connection: TikTokLiveClient, lastActivity: number, connected: boolean, ready: Promise<boolean>}>}
 		 */
 		this.connections = new Map();
 
@@ -61,123 +66,83 @@ class TikTokService {
 	 * @returns {Promise<boolean>} - Whether connection was successful
 	 */
 	async connect(username, io) {
-		// Check if connection already exists
-		if (this.connections.has(username)) {
-			console.log(
-				`[TikTokService] Reusing existing connection for: ${username}`,
-			);
-			const existing = this.connections.get(username);
+		if (this.shuttingDown) return false;
+		const existing = this.connections.get(username);
+		if (existing) {
 			existing.lastActivity = Date.now();
-			return true;
+			return existing.ready;
 		}
 
-		console.log(`[TikTokService] Creating new connection for: ${username}`);
+		console.log(`[TikTokService] Creating PirateTok connection for: ${username}`);
+		const connection = new TikTokLiveClient(username).timeout(15000).maxRetries(0)
+			.language("pt").region("BR");
+		const entry = { connection, connected: false, lastActivity: Date.now(), ready: null };
+		this.connections.set(username, entry);
+		const current = () => this.connections.get(username) === entry && !this.shuttingDown;
 
-		try {
-			// Create new TikTok Live connection
-			const connection = new WebcastPushConnection(username, {
-				processInitialData: true,
-				enableExtendedGiftInfo: true,
-				enableWebsocketUpgrade: true,
-				requestPollingIntervalMs: 2000,
-				sessionId: null,
-			});
-
-			// Store in Map
-			this.connections.set(username, {
-				connection: connection,
-				lastActivity: Date.now(),
-			});
-
-			// Reset reconnect state on fresh connect
-			this.reconnectState.delete(username);
-
-			// ==========================================
-			// TIKTOK EVENT HANDLERS
-			// All events use normalizers from tiktokEventNormalizer.js
-			// ==========================================
-
-			/** Handle Chat Messages */
-			connection.on("chat", (data) => {
+		for (const [event, normalize] of Object.entries({
+			chat: normalizeChat, like: normalizeLike, share: normalizeShare, gift: normalizeGift,
+		})) {
+			connection.on(event, data => {
+				if (!current()) return;
 				this.updateActivity(username);
-				const payload = normalizeChat(data);
-				io.to(username).emit("tiktok_chat", payload);
+				const normalized = normalize(data);
+				try { this.onActivity?.(username, event, normalized, data.common?.msgId); }
+				catch (error) { console.error(`[Rankings] Failed to save: ${error.message}`); }
+				io.to(username).emit(`tiktok_${event}`, normalized);
 			});
-
-			/** Handle Like Events */
-			connection.on("like", (data) => {
-				this.updateActivity(username);
-				const payload = normalizeLike(data);
-				io.to(username).emit("tiktok_like", payload);
-				console.log(
-					`[${username}] Like: ${payload.likeCount} from ${payload.user.nickname}`,
-				);
-			});
-
-			/** Handle Share Events */
-			connection.on("social", (data) => {
-				if (data.displayType === "pm_mt_msg_viewer_share") {
-					this.updateActivity(username);
-					const payload = normalizeShare(data);
-					io.to(username).emit("tiktok_share", payload);
-					console.log(`[${username}] Share from ${payload.user.nickname}`);
-				}
-			});
-
-			/** Handle Gift Events — single canonical emit, no legacy duplication */
-			connection.on("gift", (data) => {
-				this.updateActivity(username);
-				const payload = normalizeGift(data);
-				io.to(username).emit("tiktok_gift", payload);
-				console.log(
-					`[${username}] Gift: ${payload.giftName} x${payload.repeatCount} (${payload.giftType}, ${payload.giftValue}💎)`,
-				);
-			});
-
-			// ==========================================
-			// CONNECTION STATUS HANDLERS
-			// ==========================================
-			connection.on("connected", (state) => {
-				console.log(`[TikTokService] Connected to live: ${username}`);
-				io.to(username).emit("tiktok_connected", {
-					roomId: state.roomId,
-					timestamp: Date.now(),
-				});
-			});
-
-			connection.on("disconnected", () => {
-				console.log(`[TikTokService] Disconnected from: ${username}`);
-				this.connections.delete(username);
-				io.to(username).emit("tiktok_disconnected", {
-					timestamp: Date.now(),
-				});
-
-				// Auto-reconnect if there are still clients in the room
-				const clientCount = this.getClientCount(username);
-				if (clientCount > 0) {
-					this._scheduleReconnect(username, io);
-				}
-			});
-
-			connection.on("error", (err) => {
-				console.error(`[TikTokService] Error for ${username}:`, err.message);
-				io.to(username).emit("tiktok_error", {
-					message: err.message,
-					timestamp: Date.now(),
-				});
-			});
-
-			// Establish connection
-			await connection.connect();
-			return true;
-		} catch (error) {
-			console.error(
-				`[TikTokService] Cannot connect to ${username}:`,
-				error.message,
-			);
+		}
+		connection.on("liveEnded", () => {
+			if (current()) connection.disconnect();
+		});
+		connection.on("disconnected", () => {
+			if (!current() || !entry.connected) return;
 			this.connections.delete(username);
-			return false;
-		}
+			io.to(username).emit("tiktok_disconnected", { timestamp: Date.now() });
+			if (this.getClientCount(username) > 0) void this._scheduleReconnect(username, io);
+		});
+		connection.on("error", error => {
+			if (!current()) return;
+			console.error(`[TikTokService] Error for ${username}:`, error.message);
+			io.to(username).emit("tiktok_error", { message: error.message, timestamp: Date.now() });
+		});
+
+		entry.ready = Promise.resolve().then(async () => {
+			if (!current()) return false;
+			let timeout;
+			try {
+				// PirateTok emits "connected" before the handshake; its promise waits for it.
+				const roomId = await Promise.race([
+					connection.connect(),
+					new Promise((_, reject) => {
+						timeout = setTimeout(() => {
+							reject(new Error("TikTok connection timed out after 45 seconds"));
+							connection.disconnect();
+						}, 45000);
+					}),
+				]);
+				if (!current()) {
+					connection.disconnect();
+					return false;
+				}
+				entry.connected = true;
+				console.log(`[TikTokService] Connected to live: ${username}`);
+				io.to(username).emit("tiktok_connected", { roomId, timestamp: Date.now() });
+				return true;
+			} catch (error) {
+				if (current()) {
+					this.connections.delete(username);
+					console.error(`[TikTokService] Cannot connect to ${username}:`, error.message);
+					io.to(username).emit("tiktok_error", { message: error.message, timestamp: Date.now() });
+					if (this.getClientCount(username) > 0) void this._scheduleReconnect(username, io);
+				}
+				connection.disconnect();
+				return false;
+			} finally {
+				clearTimeout(timeout);
+			}
+		});
+		return entry.ready;
 	}
 
 	/**
@@ -189,14 +154,17 @@ class TikTokService {
 	 * @private
 	 */
 	async _scheduleReconnect(username, io) {
+		if (this.shuttingDown) return;
 		// Guard against overlapping reconnect loops
-		const state = this.reconnectState.get(username);
-		if (state?.attempting) return;
+		const previous = this.reconnectState.get(username);
+		if (previous?.attempting) return;
 
 		let attempt = 0;
-		this.reconnectState.set(username, { attempting: true, attempt });
+		const state = { attempting: true, attempt };
+		this.reconnectState.set(username, state);
 
 		while (shouldRetry(attempt)) {
+			if (this.reconnectState.get(username) !== state || this.shuttingDown) return;
 			// Bail if no clients remain (nobody watching → no point reconnecting)
 			if (this.getClientCount(username) === 0) {
 				console.log(
@@ -224,6 +192,8 @@ class TikTokService {
 			});
 
 			await sleep(delay);
+			if (this.shuttingDown || this.reconnectState.get(username) !== state) return;
+			if (this.getClientCount(username) === 0) break;
 
 			const ok = await this.connect(username, io);
 			if (ok) {
@@ -235,7 +205,12 @@ class TikTokService {
 			}
 
 			attempt++;
-			this.reconnectState.set(username, { attempting: true, attempt });
+			state.attempt = attempt;
+		}
+
+		if (this.getClientCount(username) === 0 || this.connections.has(username)) {
+			this.reconnectState.delete(username);
+			return;
 		}
 
 		console.error(
@@ -256,16 +231,21 @@ class TikTokService {
 		// Cancel any pending reconnect
 		this.reconnectState.delete(username);
 
-		if (this.connections.has(username)) {
-			const { connection } = this.connections.get(username);
-			try {
-				connection.disconnect();
-			} catch (e) {
-				// Ignore disconnect errors
-			}
+		const entry = this.connections.get(username);
+		if (entry) {
+			// Remove first so a deliberate disconnect never starts a reconnect loop.
 			this.connections.delete(username);
+			entry.connection.disconnect();
 			console.log(`[TikTokService] Disconnected: ${username}`);
 		}
+	}
+
+	shutdown() {
+		this.shuttingDown = true;
+		clearInterval(this.cleanupInterval);
+		this.roomClients.clear();
+		this.reconnectState.clear();
+		for (const username of this.connections.keys()) this.disconnect(username);
 	}
 
 	/**

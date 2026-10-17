@@ -11,6 +11,7 @@
  */
 
 import express from "express";
+import { InteractionStore } from "./lib/interactionStore.js";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import { fileURLToPath } from "url";
@@ -24,6 +25,8 @@ const __dirname = dirname(__filename);
 // ==========================================
 // SERVER INITIALIZATION
 // ==========================================
+const rankings = new InteractionStore(process.env.RANKINGS_DB || join(__dirname, "../data/rankings.sqlite"));
+tiktokService.onActivity = (...args) => rankings.record(...args);
 const app = express();
 const server = createServer(app);
 
@@ -71,6 +74,16 @@ app.get("/api/stats", (req, res) => {
   res.json(tiktokService.getStats());
 });
 
+app.get('/api/leaderboards/:username', (req, res) => {
+  const username = req.params.username.trim().toLowerCase();
+  if (!/^[a-z0-9_.]{1,64}$/.test(username)) return res.status(400).json({error:'Invalid username'});
+  try { res.json(rankings.leaderboards(username)); }
+  catch (error) {
+    console.error(`[Rankings] Failed to read: ${error.message}`);
+    res.status(500).json({error:'Could not load rankings'});
+  }
+});
+
 // ==========================================
 // SOCKET.IO - REALTIME CONNECTION HANDLING
 // ==========================================
@@ -96,15 +109,17 @@ io.on("connection", (socket) => {
     // Normalize username (lowercase, trimmed)
     const normalizedUsername = username.toLowerCase().trim();
 
-    // Store username in socket instance for disconnect handling
-    socket.tiktokUsername = normalizedUsername;
-
-    // Join Socket.io room
-    socket.join(normalizedUsername);
-    console.log(`[Socket] ${socket.id} joined room: ${normalizedUsername}`);
-
-    // Update room client tracking
-    tiktokService.addClientToRoom(normalizedUsername);
+    // Repeated joins reuse membership; switching streamers leaves the previous room.
+    if (socket.tiktokUsername !== normalizedUsername) {
+      if (socket.tiktokUsername) {
+        socket.leave(socket.tiktokUsername);
+        tiktokService.removeClientFromRoom(socket.tiktokUsername);
+      }
+      socket.tiktokUsername = normalizedUsername;
+      socket.join(normalizedUsername);
+      tiktokService.addClientToRoom(normalizedUsername);
+      console.log(`[Socket] ${socket.id} joined room: ${normalizedUsername}`);
+    }
 
     // Connect to TikTok Live (reuses existing connection if available)
     try {
@@ -131,8 +146,10 @@ io.on("connection", (socket) => {
    * LEAVE ROOM HANDLER
    */
   socket.on("leave-room", (username) => {
-    if (username) {
+    if (typeof username === "string") {
       const normalizedUsername = username.toLowerCase().trim();
+      if (socket.tiktokUsername !== normalizedUsername) return;
+      socket.tiktokUsername = null;
       socket.leave(normalizedUsername);
       tiktokService.removeClientFromRoom(normalizedUsername);
       console.log(`[Socket] ${socket.id} left room: ${normalizedUsername}`);
@@ -168,22 +185,29 @@ io.on("connection", (socket) => {
 server.listen(PORT, () => {
   console.log(`
     TikTok Live Games - Open Source Platform
-    Server running at: → http://localhost:${PORT}
+    Server running at: → http://localhost:${server.address().port}
     `);
 });
 
-// Graceful shutdown handler
-process.on("SIGINT", () => {
+// Close upgraded Socket.io connections too; server.close() alone leaves them open.
+let shuttingDown = false;
+function shutdown() {
+  if (shuttingDown) return;
+  shuttingDown = true;
   console.log("\n[Server] Shutting down...");
+  const deadline = setTimeout(() => {
+    console.error("[Server] Shutdown timed out; forcing exit.");
+    process.exit(1);
+  }, 5000);
+  deadline.unref();
 
-  // Disconnect all TikTok connections
-  const stats = tiktokService.getStats();
-  stats.connections.forEach((username) => {
-    tiktokService.disconnect(username);
-  });
-
-  server.close(() => {
+  tiktokService.shutdown();
+  rankings.close();
+  io.close(() => {
+    clearTimeout(deadline);
     console.log("[Server] Goodbye!");
     process.exit(0);
   });
-});
+}
+process.on("SIGINT", shutdown);
+process.on("SIGTERM", shutdown);

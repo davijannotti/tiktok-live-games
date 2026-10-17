@@ -1,0 +1,7 @@
+Exportado do OBS 32.2.1 no Linux em 2026-10-16.
+Cena Browser: 720x1280, audio separado (reroute_audio=true).
+Video: 720x1280, 30 FPS; x264; 6000 kbps; audio 160 kbps.
+Perfil e cena renomeados para TikTok Live Games.
+Chave Restream removida; diretorios de gravacao substituidos; CookieId removido.
+Script cadastrado, ativado: 20 minutos online + 30 segundos de pausa.
+Cookies, logs, senha WebSocket e historico de usuarios nao estao no repositorio.

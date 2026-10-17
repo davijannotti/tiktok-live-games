@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#29204d">
+  <title>Lula x Flávio 🇧🇷 Comente 13 ou 22 e entre na disputa</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../planalto-race/style.css">
+  <link rel="stylesheet" href="../torcida-tug/style.css">
+  <link rel="stylesheet" href="../torcida-tower/style.css">
+</head>
+<body>
+<main id="stage" aria-label="Batalha da urna: jogo fictício Lula versus Flávio Bolsonaro">
+  <header>
+    <img id="brazil-flag" class="header-flag" src="assets/brasil.svg" alt="" width="42" height="30" aria-hidden="true">
+    <div class="title-row"><div class="game-title"><span id="mode-name">BATALHA DA URNA 🗳️</span><strong>COMENTE 13 OU 22</strong><small id="mode-hint">Entre na disputa! 1 voto grátis por rodada.</small></div><div class="round-clock"><span id="round">RODADA 01</span><time id="timer" aria-label="Tempo restante">05:00</time><span id="phase-label">TEMPO PRA VIRAR</span></div></div>
+    <div class="time-track"><div id="time-fill"></div></div>
+  </header>
+
+  <section class="arena" aria-labelledby="title">
+    <h1 id="title"><span>LULA</span><i>VS</i><span>FLÁVIO<small>BOLSONARO</small></span></h1>
+    <div id="minigame-host" hidden></div>
+    <div class="fighters">
+      <article class="fighter red" id="fighter-lula"><div class="portrait lula" role="img" aria-label="Ilustração de Lula com camisa vermelha"></div><span class="team-number">13</span><img class="party-badge" src="assets/pt.svg" alt="PT — Partido dos Trabalhadores" width="48" height="48"><div class="scoreboard"><strong id="score-lula">0</strong><span>PONTOS</span></div></article>
+      <span class="versus" aria-hidden="true">⚡</span>
+      <article class="fighter green" id="fighter-bolsonaro"><div class="portrait flavio" role="img" aria-label="Ilustração de Flávio Bolsonaro com camisa verde"></div><span class="team-number">22</span><img class="party-badge" src="assets/pl.svg" alt="PL — Partido Liberal" width="48" height="48"><div class="scoreboard"><strong id="score-bolsonaro">0</strong><span>PONTOS</span></div></article>
+    </div>
+    <div class="tug-caption"><span>← PUXA PRO LULA</span><span>PUXA PRO FLÁVIO →</span></div>
+    <div class="battle-meter" role="img" aria-label="Proporção dos pontos dos dois times"><div id="balance"></div><span aria-hidden="true">⚡</span></div>
+    <p id="battle-status" class="battle-status" role="status">QUEM VAI SAIR NA FRENTE?</p>
+  </section>
+
+  <section class="gift-guide" aria-labelledby="gift-heading">
+    <h2 id="gift-heading">QUER DAR UMA FORÇA EXTRA? <span>MANDA PRESENTE!</span></h2>
+    <div id="gift-lula" class="gift-team red"><h3>PRO LULA <span>13</span></h3><div class="gift-options"><div><span class="gift-icon" aria-hidden="true">🌹</span><strong>Rose</strong><b class="gift-price">🪙 1 <small>moeda</small></b></div><span class="gift-or">OU</span><div><span class="gift-icon" aria-hidden="true">❤️</span><strong>Heart</strong><b class="gift-price">🪙 10 <small>moedas</small></b></div></div></div>
+    <div id="gift-bolsonaro" class="gift-team green"><h3>PRO FLÁVIO <span>22</span></h3><div class="gift-options"><div><img class="gift-icon" src="assets/gifts/white-rose.png" alt="" width="49" height="49"><strong>White Rose</strong><b class="gift-price">🪙 1 <small>moeda</small></b></div><span class="gift-or">OU</span><div><img class="gift-icon" src="assets/gifts/tiny-diny.png" alt="" width="49" height="49"><strong>Tiny Diny</strong><b class="gift-price">🪙 10 <small>moedas</small></b></div></div></div>
+    <p>1 moeda = 1 ponto · 10 moedas = 10 pontos · VALE PROS DOIS!</p>
+  </section>
+
+  <section class="voting-zone" aria-label="Urna ilustrativa animada">
+    <div class="vote-caption"><span id="vote-label">QUEM VAI APERTAR O CONFIRMA?</span><b id="vote-points">13 × 22</b></div>
+    <div class="machine" id="machine">
+      <div class="screen"><small>É JOGO, NÃO É VOTAÇÃO OFICIAL</small><p id="screen-title">ESCOLHA SEU TIME!</p><div class="digits"><span id="digit-1">–</span><span id="digit-2">–</span></div><div class="screen-person" id="screen-person">PRESENTE VIROU PONTO!</div><div class="screen-line"></div><span id="screen-state">A torcida faz o jogo!</span></div>
+      <div class="keyboard" aria-hidden="true"><div class="keys"><span data-key="1">1</span><span data-key="2">2</span><span data-key="3">3</span><span data-key="4">4</span><span data-key="5">5</span><span data-key="6">6</span><span data-key="7">7</span><span data-key="8">8</span><span data-key="9">9</span><span class="zero" data-key="0">0</span></div><div class="action-keys"><span>BRANCO</span><span>CORRIGE</span><span data-key="ok">CONFIRMA</span></div><div id="pointer">☝</div></div>
+    </div>
+  </section>
+
+
+
+
+  <section class="activity" aria-label="Jogadas recentes"><div class="section-label"><span>OLHA QUEM PUXOU!</span><small id="activity-type">ÚLTIMAS JOGADAS</small></div><ol id="feed" aria-live="polite"></ol></section>
+  <audio id="background-music" src="assets/audio/carnival-brasil.mp3" preload="auto"></audio>
+  <footer>JOGO FICTÍCIO · SEM VÍNCULO COM CANDIDATOS OU JUSTIÇA ELEITORAL<br>Música: <a id="music-credit" href="https://www.silvermansound.com/free-music/carnaval" target="_blank" rel="noopener noreferrer">Carnival Brasil — Shane Ivers</a> · <a id="music-license" href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a></footer>
+  <div id="donor-banner" role="status" hidden><span>OLHA QUEM CHEGOU!</span><div id="donor-avatar" aria-hidden="true"></div><strong id="donor-name"></strong><span id="donor-detail"></span></div>
+  <div id="mode-announcement" hidden role="status"><strong id="mode-announcement-title"></strong><span id="mode-announcement-hint"></span></div>
+  <div id="effects" aria-hidden="true"></div>
+  <div id="reward-popup" aria-hidden="true" hidden><span id="reward-title">BOA, TORCIDA!</span><strong id="reward-points">+1</strong><span id="reward-player"></span></div>
+  <section id="result" class="result" hidden aria-label="Resultado da rodada" aria-live="polite"><div class="result-top">FIM DE JOGO!</div><div id="winner-hero" class="winner-hero" hidden aria-hidden="true"><div id="winner-photo" class="portrait winner-photo"></div><div class="winner-party-flag"><img id="winner-party" src="assets/pt.svg" alt=""></div></div><span id="result-star" class="result-star" aria-hidden="true">🏆</span><p id="result-kicker">VENCEDOR DA RODADA</p><h2 id="winner">EMPATE</h2><div class="result-score" id="result-score">0 × 0</div><p id="result-detail">Pontuação da rodada</p><div class="leaderboards"><h3>🏆 TORCIDA DE OURO! <small id="ranking-scope">DESTA RODADA</small></h3><section><h4>💬 MAIS COMENTARAM</h4><ol id="leaders-comments"></ol></section><section><h4>🎁 MAIS PRESENTEARAM</h4><ol id="leaders-gifts"></ol></section><section><h4>❤️ MAIS CURTIRAM</h4><ol id="leaders-likes"></ol></section></div><div class="next-round"><span id="next-game">PRÓXIMO: CORRIDA DO PLANALTO</span><strong id="next-timer">01:00</strong></div><small>Pontos zerados na próxima rodada.<br>Presentes no intervalo não pontuam.</small></section>
+</main>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/lib/tiktok-bridge.js"></script>
+<script type="module" src="game.js"></script>
+</body>
+</html>

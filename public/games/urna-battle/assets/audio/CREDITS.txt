@@ -1,0 +1,47 @@
+Carnival Brasil — Shane Ivers (Silverman Sound)
+Licensed under Creative Commons Attribution 4.0 International (CC BY 4.0).
+Free personal and commercial use with attribution; this is not a CC0 recording.
+License: https://creativecommons.org/licenses/by/4.0/
+Track source and licensing statement: https://www.silvermansound.com/free-music/carnaval
+Original download: https://www.silvermansound.com/wp-content/uploads/carnaval.mp3
+ISRC: UKEZT1600058
+Downloaded: 2026-10-16
+Style: Brazilian carnival, batteria percussion, brass and whistle, 110 BPM.
+Changes: re-encoded to 96 kbps MP3, metadata removed. Full track retained.
+Playback: random playlist at 18% volume, briefly ducked beneath major game cues.
+
+Attribution for stream descriptions (required by the free license):
+Music: Carnival Brasil by Shane Ivers - https://www.silvermansound.com
+https://www.silvermansound.com/free-music/carnaval
+https://creativecommons.org/licenses/by/4.0/
+
+Sound effects: original oscillator-based arcade cues implemented in audio.js.
+No third-party sound-effect samples or additional audio libraries.
+
+Additional instrumental playlist tracks (downloaded 2026-10-16):
+
+Accordion Street Sway — BudgetPixel AI
+Source/license statement: https://budgetpixel.com/background-music/accordion-street-sway-4ab5fddd
+Original: https://cdn.budgetpixel.com/audio-library/music/cumbia-swing-upbeat-accordion-bouncy-149sqjc.wav
+License: CC BY 4.0 — https://creativecommons.org/licenses/by/4.0/
+Local: accordion-street-sway.mp3
+Changes: loudness-normalized to -18 LUFS / -2 dBTP, re-encoded as 96 kbps MP3; metadata removed. Full track retained.
+Attribution: Music: Accordion Street Sway by BudgetPixel AI — https://budgetpixel.com/background-music/accordion-street-sway-4ab5fddd — CC BY 4.0 (normalized/re-encoded).
+
+Cumbia Street Stroll — BudgetPixel AI
+Source/license statement: https://budgetpixel.com/background-music/cumbia-street-stroll-7d318a9f
+Original: https://cdn.budgetpixel.com/audio-library/music/colombian-cumbia-upbeat-rhythmic-accordion-9khqo8.wav
+License: CC BY 4.0 — https://creativecommons.org/licenses/by/4.0/
+Local: cumbia-street-stroll.mp3
+Changes: loudness-normalized to -18 LUFS / -2 dBTP, re-encoded as 96 kbps MP3; metadata removed. Full track retained.
+Attribution: Music: Cumbia Street Stroll by BudgetPixel AI — https://budgetpixel.com/background-music/cumbia-street-stroll-7d318a9f — CC BY 4.0 (normalized/re-encoded).
+
+Funky Brazilian Phonk — BudgetPixel AI
+Source/license statement: https://budgetpixel.com/background-music/funky-brazilian-phonk-54fb718d
+Original: https://cdn.budgetpixel.com/audio-library/music/brazilian-phonk-aggressive-heavy-808-1p38mxs.wav
+License: CC BY 4.0 — https://creativecommons.org/licenses/by/4.0/
+Local: funky-brazilian-phonk.mp3
+Changes: loudness-normalized to -18 LUFS / -2 dBTP, re-encoded as 96 kbps MP3; metadata removed. Full track retained.
+Attribution: Music: Funky Brazilian Phonk by BudgetPixel AI — https://budgetpixel.com/background-music/funky-brazilian-phonk-54fb718d — CC BY 4.0 (normalized/re-encoded).
+
+Playlist plays full tracks in randomized order without immediate repeats. Credits on-screen follow the current track. New tracks are AI-generated library instrumentals; they are not Forro Boys recordings or covers of famous songs. Accordion Street Sway and Cumbia Street Stroll are cumbia, not Brazilian forro.

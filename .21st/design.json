@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "project": {
+    "name": "tiktok-live-games",
+    "productType": null,
+    "stack": []
+  },
+  "sources": {
+    "tokens": [],
+    "components": [],
+    "assets": [],
+    "instructions": [
+      "AGENTS.md"
+    ]
+  },
+  "design": {
+    "colorMode": "unknown",
+    "colors": {},
+    "typography": {},
+    "spacing": {},
+    "radius": {},
+    "shadows": {},
+    "motion": {},
+    "density": "unknown"
+  },
+  "components": {
+    "installed": [],
+    "preferredPrimitives": [],
+    "patterns": []
+  },
+  "constraints": {
+    "must": [],
+    "avoid": []
+  },
+  "decisions": [
+    {
+      "scope": "public/games/urna-battle",
+      "decision": "Playful Brazilian torcida arcade: purple halftone background, yellow ink lettering, equal red and lime team portraits, large integrated scores and gift instructions. Short point bursts, confetti, comeback announcements and victory celebration; honor reduced motion and leave lower live safe zone. Green character is Flávio Bolsonaro; internal bolsonaro key stays compatible."
+    },
+    {
+      "scope": "public/games/urna-battle + planalto-race + torcida-tug + torcida-tower",
+      "decision": "One shared vertical shell rotates urna/race/tug/tower after results. Keep identical gifts, scoring, avatars and SQLite all-time totals; each visual stays within 496×270 and leaves gifts above lower chat region. Cosmetic movement never changes the authoritative winner."
+    }
+  ],
+  "evidence": [
+    {
+      "fact": "project.instructions",
+      "source": "AGENTS.md"
+    }
+  ],
+  "generatedAt": "2026-10-16T17:40:20.810Z"
+}

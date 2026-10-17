@@ -1,0 +1,45 @@
+.torcida-tug{--tug-shift:0px;--tug-meter:50%;height:270px;position:relative;isolation:isolate;overflow:hidden;border:3px solid #21153c;border-radius:20px;background:#fff1c7;color:#21153c;text-align:center;box-sizing:border-box;font-family:Arial,sans-serif;box-shadow:0 5px 0 #171029}
+.torcida-tug .torcida-tug-heading{height:32px;display:flex;align-items:center;justify-content:center;gap:12px;background:#ffdc42;font:21px var(--paint,'Permanent Marker',cursive);border-bottom:2px solid #21153c}
+.torcida-tug .torcida-tug-heading img{width:27px;height:19px;object-fit:contain}
+.torcida-tug .torcida-tug-status{font-size:12px;font-weight:800;margin:6px 4px 0;height:17px}
+.torcida-tug .torcida-tug-plaza{height:157px;position:relative;background:linear-gradient(transparent 78%,#e7be81 78%);overflow:hidden}
+.torcida-tug .torcida-tug-crowd{position:absolute;top:4px;font-size:24px;letter-spacing:-6px;opacity:.65}
+.torcida-tug .torcida-tug-crowd-left{left:14px}
+.torcida-tug .torcida-tug-crowd-right{right:18px}
+.torcida-tug .torcida-tug-center{position:absolute;left:50%;top:55px;height:102px;border-left:3px dashed #a77653}
+.torcida-tug .torcida-tug-team{position:absolute;width:102px;top:20px;transform:translateX(var(--tug-shift));transition:transform .7s ease;z-index:2}
+.torcida-tug .torcida-tug-lula{left:calc(50% - 173px);--shirt:#f44460;--hand:#dca37a}
+.torcida-tug .torcida-tug-bolsonaro{right:calc(50% - 173px);--shirt:#a5eb29;--hand:#edbe9a}
+.torcida-tug .torcida-tug-puller{position:relative;height:104px;transform-origin:50% 90%}
+.torcida-tug .torcida-tug-face{position:absolute;top:0;left:23px;width:58px;height:60px;border:2px solid #21153c;border-radius:48% 48% 40% 40%;background-image:url('../urna-battle/assets/lula-flavio-arcade.webp');background-size:200% auto;background-repeat:no-repeat;background-color:var(--shirt);z-index:3}
+.torcida-tug .torcida-tug-face-lula{background-position:0 15%}
+.torcida-tug .torcida-tug-face-bolsonaro{background-position:100% 15%}
+.torcida-tug .torcida-tug-body{position:absolute;top:50px;left:30px;width:45px;height:41px;border:2px solid #21153c;border-radius:15px 15px 7px 7px;background:var(--shirt)}
+.torcida-tug .torcida-tug-arm{position:absolute;top:68px;height:12px;width:53px;border:2px solid #21153c;background:var(--hand);border-radius:10px;left:60px;transform:rotate(-8deg);z-index:4}
+.torcida-tug .torcida-tug-bolsonaro .torcida-tug-arm{left:-8px;transform:rotate(8deg)}
+.torcida-tug .torcida-tug-feet{position:absolute;top:79px;left:25px;font-size:29px;letter-spacing:1px;color:#21153c}
+.torcida-tug .torcida-tug-team strong{display:block;position:relative;z-index:5;font:14px var(--paint,'Permanent Marker',cursive);background:var(--shirt);border:2px solid #21153c;border-radius:7px;line-height:20px}
+.torcida-tug .torcida-tug-party{position:absolute;left:0;top:38px;width:27px;height:27px;object-fit:contain;transform:rotate(-12deg);z-index:5;background:#fff;border-radius:50%;padding:2px}
+.torcida-tug .torcida-tug-bolsonaro .torcida-tug-party{left:auto;right:-2px;transform:rotate(12deg)}
+.torcida-tug .torcida-tug-rope{position:absolute;left:calc(50% - 117px);top:92px;width:234px;height:9px;border:2px solid #714621;border-radius:8px;background:repeating-linear-gradient(115deg,#d9a760 0 5px,#f9d28a 5px 9px);transform:translateX(var(--tug-shift));transition:transform .7s ease;z-index:3}
+.torcida-tug .torcida-tug-knot{position:absolute;left:calc(50% - 13px);top:-13px;font-size:27px}
+.torcida-tug .torcida-tug-dust{position:absolute;left:calc(50% - 6px);top:132px;color:#ad7b46;font-size:18px}
+.torcida-tug .torcida-tug-track{position:relative;margin:1px 24px 5px;height:9px;background:linear-gradient(90deg,#f44460 50%,#a5eb29 50%);border:2px solid #21153c;border-radius:12px}
+.torcida-tug .torcida-tug-track span{position:absolute;left:var(--tug-meter);top:-4px;width:12px;height:14px;border:2px solid #21153c;background:#ffdc42;border-radius:4px;transform:translateX(-50%);transition:left .7s ease}
+.torcida-tug .torcida-tug-instruction{font-size:11px;font-weight:800;letter-spacing:.1px}
+.torcida-tug .torcida-tug-instruction b{font-size:14px}
+.torcida-tug.torcida-tug-winner-lula .torcida-tug-lula strong,.torcida-tug.torcida-tug-winner-bolsonaro .torcida-tug-bolsonaro strong{background:#ffdc42;box-shadow:0 0 0 3px #fff}
+.torcida-tug.torcida-tug-finished .torcida-tug-status{color:#72257c}
+@media(prefers-reduced-motion:reduce){.torcida-tug .torcida-tug-team,.torcida-tug .torcida-tug-rope,.torcida-tug .torcida-tug-track span{transition:none}}
+
+.torcida-tug .torcida-tug-team strong{display:flex;align-items:center;justify-content:center;gap:4px;font-size:12px}
+.torcida-tug .torcida-tug-team strong b{font:800 17px Arial,sans-serif}
+.torcida-tug.torcida-tug-reduced .torcida-tug-team,.torcida-tug.torcida-tug-reduced .torcida-tug-rope,.torcida-tug.torcida-tug-reduced .torcida-tug-track span{transition:none}
+
+.torcida-tug .torcida-tug-puller{--effort-direction:-1;animation:torcida-tug-effort 1.35s ease-in-out infinite}
+.torcida-tug .torcida-tug-puller-bolsonaro{--effort-direction:1;animation-delay:-.675s}
+.torcida-tug .torcida-tug-rope{animation:torcida-tug-strain .28s ease-in-out infinite alternate}
+@keyframes torcida-tug-effort{0%,100%{transform:translateY(1px) rotate(calc(var(--effort-direction) * 3deg))}45%{transform:translate(calc(var(--effort-direction) * 4px),-2px) rotate(calc(var(--effort-direction) * 9deg))}65%{transform:translate(calc(var(--effort-direction) * 3px),0) rotate(calc(var(--effort-direction) * 7deg))}}
+@keyframes torcida-tug-strain{from{translate:0 0}to{translate:0 1px}}
+.torcida-tug.torcida-tug-finished .torcida-tug-puller,.torcida-tug.torcida-tug-finished .torcida-tug-rope,.torcida-tug.torcida-tug-reduced .torcida-tug-puller,.torcida-tug.torcida-tug-reduced .torcida-tug-rope{animation:none}
+@media(prefers-reduced-motion:reduce){.torcida-tug .torcida-tug-puller,.torcida-tug .torcida-tug-rope{animation:none}}

@@ -1,6 +1,6 @@
 /**
  * tiktokEventNormalizer.js
- * Pure functions that normalize raw tiktok-live-connector payloads
+ * Pure functions that normalize raw PirateTok payloads
  * into a consistent shape for downstream consumers (games, bridge, debug).
  *
  * @module lib/tiktokEventNormalizer
@@ -8,14 +8,14 @@
 
 /**
  * Extract consistent user object from raw TikTok data.
- * @param {Object} raw - Raw event data from tiktok-live-connector
+ * @param {Object} raw - Raw event data from PirateTok
  * @returns {{uniqueId: string, nickname: string, profilePictureUrl: string}}
  */
 export function normalizeUser(raw) {
 	return {
-		uniqueId: raw.uniqueId || "",
+		uniqueId: raw.uniqueId || String(raw.id || ""),
 		nickname: raw.nickname || raw.uniqueId || "Anonymous",
-		profilePictureUrl: raw.profilePictureUrl || "",
+		profilePictureUrl: raw.avatarThumb?.urlList?.[0] || "",
 	};
 }
 
@@ -26,8 +26,8 @@ export function normalizeUser(raw) {
  */
 export function normalizeChat(raw) {
 	return {
-		user: normalizeUser(raw),
-		comment: (raw.comment || "").toLowerCase().trim(),
+		user: normalizeUser(raw.user || {}),
+		comment: (raw.content || "").toLowerCase().trim(),
 		timestamp: Date.now(),
 	};
 }
@@ -39,9 +39,9 @@ export function normalizeChat(raw) {
  */
 export function normalizeLike(raw) {
 	return {
-		user: normalizeUser(raw),
-		likeCount: raw.likeCount || 0,
-		totalLikeCount: raw.totalLikeCount || 0,
+		user: normalizeUser(raw.user || {}),
+		likeCount: Number(raw.count || 0),
+		totalLikeCount: Number(raw.total || 0),
 		timestamp: Date.now(),
 	};
 }
@@ -53,7 +53,7 @@ export function normalizeLike(raw) {
  */
 export function normalizeShare(raw) {
 	return {
-		user: normalizeUser(raw),
+		user: normalizeUser(raw.user || {}),
 		timestamp: Date.now(),
 	};
 }
@@ -73,17 +73,20 @@ export function categorizeGift(value) {
  * Normalize gift event — the canonical shape for all consumers.
  * Adds giftId which was previously missing.
  *
- * @param {Object} raw - Raw gift event from tiktok-live-connector
- * @returns {{user: Object, giftId: number, giftName: string, giftValue: number, repeatCount: number, giftType: string, timestamp: number}}
+ * @param {Object} raw - Raw gift event from PirateTok
+ * @returns {{user: Object, giftId: number, giftName: string, giftValue: number, repeatCount: number, streakType: number, repeatEnd: boolean, eventId: string, giftType: string, timestamp: number}}
  */
 export function normalizeGift(raw) {
-	const giftValue = raw.diamondCount || raw.giftValue || 1;
+	const giftValue = Number(raw.gift?.diamondCount ?? 0);
 	return {
-		user: normalizeUser(raw),
-		giftId: raw.giftId || 0,
-		giftName: raw.giftName || raw.giftDetails?.giftName || "Unknown Gift",
+		user: normalizeUser(raw.user || {}),
+		giftId: Number(raw.giftId || raw.gift?.id || 0),
+		giftName: raw.gift?.name || "Unknown Gift",
 		giftValue,
-		repeatCount: raw.repeatCount || 1,
+		repeatCount: Number(raw.repeatCount ?? 1),
+		streakType: Number(raw.gift?.type ?? 0),
+		repeatEnd: Number(raw.repeatEnd) === 1,
+		eventId: String(raw.common?.msgId || ""),
 		giftType: categorizeGift(giftValue),
 		timestamp: Date.now(),
 	};
